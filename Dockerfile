@@ -4,6 +4,10 @@ FROM mautic/mautic:7.2.1-apache
 
 USER root
 
+# Apache otherwise guesses a Railway container hostname and logs AH00558.
+RUN printf 'ServerName localhost\n' > /etc/apache2/conf-available/server-name.conf \
+    && a2enconf server-name
+
 # mod_php needs prefork. A second enabled MPM causes Apache's AH00534 crash.
 RUN set -eu; \
     for module in event worker; do \
