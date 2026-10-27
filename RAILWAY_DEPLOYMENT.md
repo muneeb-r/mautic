@@ -11,6 +11,8 @@ one MPM loaded` means Apache had multiple multiprocessing modules enabled.
 The Dockerfile keeps `mpm_prefork` for Apache with PHP and checks Apache's
 configuration during the build. The later `Mautic is not installed, skipping
 migrations` line is expected until the initial installation is completed.
+`AH00558` is only Apache asking for a server name; the Dockerfile sets one to
+keep the startup logs clear.
 
 ## Railway setup
 
