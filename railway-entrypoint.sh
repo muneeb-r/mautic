@@ -1,6 +1,17 @@
 #!/bin/sh
 set -eu
 
+echo "Mautic Railway Dockerfile: validating Apache MPM configuration"
+for module in event worker; do
+    if [ -e "/etc/apache2/mods-enabled/mpm_${module}.load" ]; then
+        a2dismod "mpm_${module}"
+    fi
+done
+a2enmod mpm_prefork
+apache2ctl -t
+apache2-foreground -t
+apache2ctl -M 2>/dev/null | grep 'mpm_.*_module'
+
 # Railway permits one volume per service. Keep Mautic's three writable paths
 # under that mount while leaving the official image's application code intact.
 if [ -n "${RAILWAY_VOLUME_MOUNT_PATH:-}" ]; then

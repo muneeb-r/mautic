@@ -18,7 +18,9 @@ migrations` line is expected until the initial installation is completed.
    service **Root Directory** at `/`. If it is connected to the parent
    `packaging` repository, set **Root Directory** to `/mautic`. Railway detects
    `Dockerfile` at the selected root. Clear any old build or start command
-   override so the image entrypoint starts.
+   override so the image entrypoint starts. In **Build Logs**, confirm Railway
+   prints `Using detected Dockerfile!` and builds from
+   `mautic/mautic:7.2.1-apache`.
 2. Connect a MySQL service compatible with Mautic 7.2.1 (MySQL 8.4 or newer,
    or MariaDB 10.11 or newer).
 3. Set these variables on the Mautic service. Replace `MySQL` below with the
@@ -59,6 +61,10 @@ services.
 ## Checks
 
 - The build should report `Syntax OK` from `apache2ctl -t`.
+- Deploy logs should begin with `Mautic Railway Dockerfile: validating Apache
+  MPM configuration` and show `mpm_prefork_module`. If that line is absent,
+  Railway is running another image, branch, or start command; check the
+  service Source, Root Directory, Builder, Dockerfile Path, and Start Command.
 - Deploy logs should reach Apache startup without `AH00534`.
 - The installer should load at the Railway domain. After completing it,
   restart the service and confirm that its configuration and uploaded media

@@ -12,7 +12,8 @@ RUN set -eu; \
         fi; \
     done; \
     a2enmod mpm_prefork; \
-    apache2ctl -t
+    apache2ctl -t; \
+    apache2-foreground -t
 
 COPY --chmod=755 railway-entrypoint.sh /railway-entrypoint.sh
 
